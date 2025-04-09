@@ -1,0 +1,16 @@
+{
+  "name": "led-com-node",
+  "version": "1.0.0",
+  "main": "examples/hsv-transition.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@fantasy-color/hsv-to-rgb": "^2.1.0",
+    "serialport": "^13.0.0"
+  }
+}
