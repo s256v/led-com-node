@@ -3,7 +3,8 @@ import Colors from "../classes/color/Colors.js";
 import TimeUtils from "../classes/utils/TimeUtils.js";
 import HSVColor from "../classes/color/HSVColor.js";
 
-const LED_COUNT = 16;
+const LED_COUNT = 64;
+
 let ledStrip = new LedStrip(LED_COUNT, "COM5");
 await ledStrip.start();
 console.log("Started");
@@ -28,7 +29,7 @@ while (true) {
         }
         colors[i] = new HSVColor(newH, 100, 7);
     }
-    await ledStrip.setAllLedColor(colors);
+    await ledStrip.setAll(colors);
     await TimeUtils.sleep(5);
 }
 

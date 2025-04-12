@@ -7,6 +7,7 @@ export default class LedStrip {
     #ledCount;
     #buffer;
     #AT_RGB = "AT+RGB=";
+    #AT_LN = "AT+LN=";
     #AT_RGB_OFFSET = this.#AT_RGB.length;
 
     constructor(letCount, port, baudRate = 115200) {
@@ -28,9 +29,11 @@ export default class LedStrip {
         })
 
         parser.on('data', (data) => {
-            ;//console.log({"read": data})
+            //console.log({"read": data})
         });
         this.#serialPort.pipe(parser);
+
+        await this.#sendLedCount();
         await this.#refresh();
     }
 
@@ -38,14 +41,14 @@ export default class LedStrip {
         await this.#serialPort.close();
     }
 
-    async setAllLedColor(colors) {
+    async setAll(colors) {
         if (colors.length !== this.#ledCount) {
             throw new Error(`Incorrect Array length ${colors.length} != ${this.#ledCount}`);
         }
         for (let i = 0; i < this.#ledCount; i++) {
             this.#setBufferColor(i, colors[i].getRgb());
         }
-        this.#refresh();
+        await this.#refresh();
     }
 
     async setLedColor(index, color) {
@@ -63,6 +66,16 @@ export default class LedStrip {
             this.#setBufferColor(i, rgb);
         }
         await this.#refresh();
+    }
+
+    async #sendLedCount(){
+        await this.#writeString(this.#AT_LN);
+
+        const buffer = new ArrayBuffer(2);
+        let dataView = new DataView(buffer);
+        dataView.setUint16(0, this.#ledCount, true);
+
+        await this.#write(dataView);
     }
 
     #setBufferColor(index, rgb) {
@@ -84,6 +97,14 @@ export default class LedStrip {
                 resolve("Port opened");
             })
         })
+    }
+
+    async #writeString(str) {
+        let buff = Buffer.alloc(str.length, 0);
+        for (let i = 0; i < str.length; i++) {
+            buff[i] = str.charCodeAt(i);
+        }
+        await this.#write(buff);
     }
 
     #write(data) {
