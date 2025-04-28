@@ -50,8 +50,8 @@ async function inc(char) {
     if (hue < 0) {
         hue = 359;
     }
-    console.log({hue, v});
     let mainColor = new HSVColor(hue, 100, v);
+    console.log({hue, v, mainColor:mainColor.toString()});
     arr.fill(mainColor, 0, LED_COUNT - 16);
     await ledStrip.setAll(arr);
 }

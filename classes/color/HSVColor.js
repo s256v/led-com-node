@@ -35,6 +35,6 @@ export default class HSVColor extends Color {
     }
 
     toString() {
-        return `HSVColor{h=${this.#h} s=${this.#s} r=${this.#v} -> g=${this.#r} r=${this.#g} b=${this.#b}}`
+        return `HSVColor{h=${this.#h} s=${this.#s} r=${this.#v} -> r=${this.#r} g=${this.#g} b=${this.#b}}`
     }
 }
